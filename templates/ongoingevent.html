@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ongoing Events - Pollify</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    /* Custom styles for the card hover effect */
+    .event-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+    }
+  </style>
+</head>
+<body class="bg-gray-50">
+
+  {% include 'header.html' %}
+
+
+  <!-- Ongoing Events Section -->
+  <main class="container items-center mx-auto px-6 py-10">
+    <h2 class="text-3xl font-bold text-blue-600 text-center mb-10">Ongoing Events</h2>
+    
+    <div class="md:container mx-auto flex flex-wrap overflow-x-auto space-y-6 space-x-6 pb-4 ">
+      {% for d in data %}
+      <!-- Event Card 1 -->
+      <div class="event-card bg-white shadow-lg rounded-lg p-6 w-1/7  transform transition duration-300 ease-in-out">
+        <img src="https://via.placeholder.com/300x200" alt="Event Image" class="rounded-lg w-full h-40 object-cover mb-4">
+        <h3 class="text-xl font-semibold text-gray-800">{{ d.poll_name }}</h3>
+        {% comment %} <p class="text-gray-600 mt-2">{{ d.poll_name }}</p> {% endcomment %}
+        <a href="/poll/{{ d.slug }}" class="text-purple-600 mt-4 inline-block">Join</a>
+      </div>
+      {% endfor %}
+    </div>
+  </main>
+
+</body>
+</html>

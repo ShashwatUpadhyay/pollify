@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pollify - Add Options</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gradient-to-r from-blue-100 to-purple-200 min-h-screen flex justify-center items-center">
+  <div id="pollOptionsContainer" class="w-full max-w-lg bg-white shadow-lg rounded-lg p-6">
+    <!-- Header -->
+    <div class="text-center mb-6">
+      <h1 class="text-3xl font-bold text-purple-600">Pollify</h1>
+      <p id="pollNameDisplay" class="text-gray-600 mt-2">Poll Name: {{ poll_name }}</p>
+    </div>
+
+    <!-- Add Options Section -->
+    <div>
+      <form action="" method="POST" id="pollForm">
+        {% csrf_token %}
+      <label class="block text-gray-700 font-semibold">Add Options:</label>
+      <div id="optionsContainer" class="space-y-2 mt-2">
+        <input 
+          type="text"
+          name='options[]'
+          class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-purple-400 focus:outline-none"
+          placeholder="Option 1"
+        />
+      </div>
+      <button 
+        type = "button"
+        class="mt-4 bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600 transition duration-300"
+        onclick="addOption()"
+      >
+        + Add Option
+      </button>
+    </div>
+
+    <!-- Launch Poll -->
+    <div class="mt-6">
+      <button 
+        class="w-full bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition duration-300"
+        type="submit"
+      >
+        Launch Poll 🚀
+      </button>
+    </div>
+  </form>
+  </div>
+
+  <!-- Congrats Popup -->
+  <div 
+    id="congratsPopup" 
+    class="hidden fixed inset-0 bg-gray-800 bg-opacity-50 flex justify-center items-center"
+    onclick="closePopup(event)"
+  >
+    <div 
+      id="popupContent" 
+      class="bg-white p-6 rounded-lg shadow-lg text-center relative"
+      onclick="event.stopPropagation()"
+    >
+      <h2 class="text-2xl font-bold text-green-600">🎉 Congrats!</h2>
+      <p class="mt-2 text-gray-600">Poll created successfully!</p>
+      <p class="mt-2 text-purple-600 font-semibold">Poll ID: <span id="pollIdDisplay"></span></p>
+      <button 
+        id="copyButton" 
+        class="mt-4 bg-purple-500 text-white px-4 py-2 rounded-lg hover:bg-purple-600 transition duration-300"
+        onclick="copyPollId()"
+      >
+        Copy Poll ID
+      </button>
+    </div>
+  </div>
+
+  <script>
+    // Retrieve the poll name from the URL
+    const params = new URLSearchParams(window.location.search);
+    const pollName = params.get('pollName');
+    {% comment %} document.getElementById('pollNameDisplay').textContent = `Poll Name: ${pollName || "Unnamed Poll"}`; {% endcomment %}
+
+    let pollId;
+    const optionsContainer = document.getElementById('optionsContainer');
+    const congratsPopup = document.getElementById('congratsPopup');
+    const pollIdDisplay = document.getElementById('pollIdDisplay');
+
+    function addOption() {
+      const optionCount = optionsContainer.children.length + 1;
+      const newOption = document.createElement('input');
+      newOption.type = 'text';
+      newOption.name = 'options[]';
+      newOption.placeholder = `Option ${optionCount}`;
+      newOption.className = 'w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-purple-400 focus:outline-none';
+      optionsContainer.appendChild(newOption);
+    }
+
+    function launchPoll() {
+      pollId = `POLL${Math.floor(1000 + Math.random() * 9000)}`;
+      pollIdDisplay.textContent = pollId;
+      congratsPopup.classList.remove('hidden');
+    }
+
+    function closePopup(event) {
+      if (event.target === congratsPopup) {
+        congratsPopup.classList.add('hidden');
+      }
+    }
+
+    function copyPollId() {
+      navigator.clipboard.writeText(pollId).then(() => {
+        alert("Poll ID copied to clipboard!");
+      });
+    }
+  </script>
+</body>
+</html>

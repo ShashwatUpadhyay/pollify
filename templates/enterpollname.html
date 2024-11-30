@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pollify - Enter Poll Name</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body>
+    <!-- Header -->
+  {% include 'header.html' %}
+<div class="bg-gradient-to-r from-blue-100 to-purple-200 min-h-screen flex justify-center items-center">
+  <div id="pollNameContainer" class="w-full max-w-lg bg-white shadow-lg rounded-lg p-6">
+    
+    <!-- Card Header -->
+    <div class="text-center mb-6">
+      <h1 class="text-3xl font-bold text-purple-600">Pollify</h1>
+      <p class="text-gray-600 mt-2">Start by entering the poll question!</p>
+    </div>
+
+    <!-- Poll Name Input -->
+    <div>
+      <form method='POST'>
+        {% csrf_token %}
+      <label for="poll_name" class="block text-gray-700 font-semibold">Enter Poll Question:</label>
+      <input 
+        type="text" 
+        id="pollName" 
+        name="poll_name" 
+        placeholder="Enter a question for your poll" 
+        class="mt-2 w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-purple-400 focus:outline-none"
+      />
+      <label for="creator" class="block text-gray-700 font-semibold">Enter Your Name:</label>
+      <input 
+        type="text" 
+        id="creator" 
+        name="creator" 
+        placeholder="Enter Your name for your poll" 
+        class="mt-2 w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-purple-400 focus:outline-none"
+      />
+      <button 
+        type='submit'
+        class="mt-4 bg-purple-500 text-white px-6 py-2 rounded-lg hover:bg-purple-600 transition duration-300"
+      >
+        ✓ Done
+      </button>
+    </form>
+    </div>
+  </div>
+
+  <!-- Must Enter Name Popup -->
+  <div 
+    id="nameRequiredPopup" 
+    class="hidden fixed inset-0 bg-gray-800 bg-opacity-50 flex justify-center items-center"
+    onclick="closeNameRequiredPopup(event)"
+  >
+    <div 
+      id="nameRequiredContent" 
+      class="bg-white p-6 rounded-lg shadow-lg text-center relative"
+      onclick="event.stopPropagation()"
+    >
+      <h2 class="text-xl font-bold text-red-600">⚠️ Required!</h2>
+      <p class="mt-2 text-gray-600">You must enter a poll name before proceeding.</p>
+      <button 
+        class="mt-4 bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600 transition duration-300"
+        onclick="closeNameRequiredPopup()"
+      >
+        Close
+      </button>
+    </div>
+  </div>
+
+  <script>
+    function validateAndRedirect() {
+    
+    }
+  </script>
+</div>
+
+</body>
+</html>
